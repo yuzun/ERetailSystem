@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.digiwin.eretail.inner.dao.IDepartDAO">
+	<insert id="addDepart" parameterType="com.digiwin.eretail.inner.model.Depart">
+		INSERT INTO depart
+        ( departId ,
+          departName ,
+          comment
+        )
+		VALUES  ( #{departId} ,
+		          #{departName} ,
+		          #{comment}
+		        )
+	</insert>
+	
+	<update id="updateDepart" parameterType="com.digiwin.eretail.inner.model.Depart">
+		UPDATE depart SET departName=#{departName}, comment=#{comment} WHERE departId=#{departId}	
+	</update>
+	
+	<delete id="delDepartByID" parameterType="string">
+		DELETE depart WHERE departId= #{departId}
+	</delete>
+	
+	<select id="getDepartByID" parameterType="string" resultType="com.digiwin.eretail.inner.model.Depart">
+		SELECT * FROM depart WHERE departId=#{departId}
+	</select>
+	
+	<select id="getAllDepart" resultType="com.digiwin.eretail.inner.model.Depart">
+		SELECT * FROM depart
+	</select>
+	
+	<select id="getDepartByPage" parameterType="map" resultType="com.digiwin.eretail.inner.model.Depart">
+		SELECT w1.* FROM depart w1 ,(
+			SELECT TOP ${pageNumber} ROW_NUMBER() OVER (ORDER BY departId DESC) n, departId FROM depart ) w2 
+		where w1.departId = w2.departId and w2.n > ${pageSize} ORDER BY w2.n ASC
+	</select>
+
+	<select id="getDepartCount" resultType="int">
+		SELECT count(*) as count from depart
+	</select>
+    
+</mapper>

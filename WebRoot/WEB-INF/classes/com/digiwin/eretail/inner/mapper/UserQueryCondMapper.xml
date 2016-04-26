@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.digiwin.eretail.inner.dao.IUserQueryCondDAO">
+
+	<insert id="addUserQueryCond" parameterType="com.digiwin.eretail.inner.model.UserQueryCond">
+		INSERT INTO [userQueryCond]
+        ( userId ,
+          ticketId ,
+          serial ,
+          queryName ,
+          queryCond
+        )
+		VALUES  ( #{userId} ,
+		          #{ticketId} ,
+		          #{serial} ,
+		          #{queryName} ,
+		          #{queryCond}
+		        )
+	</insert>
+	
+	<delete id="delUserQueryCond" parameterType="map">
+		DELETE [userQueryCond] WHERE userId= #{userId} and ticketId= #{ticketId} and serial= #{serial}
+	</delete>
+	
+	<select id="getAllUserQueryCond" parameterType="map" resultType="com.digiwin.eretail.inner.model.UserQueryCond">
+		SELECT * FROM [userQueryCond] WHERE userId= #{userId} and ticketId= #{ticketId}
+	</select>
+</mapper>

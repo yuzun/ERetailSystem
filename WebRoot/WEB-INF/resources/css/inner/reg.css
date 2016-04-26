@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+reg {
+	padding:50px 0 0 0;
+}
+p {
+	height:22px;
+	line-height:22px;
+	padding:4px 0 0 25px;
+	left: 30px;
+}
+.textbox {
+	height:22px;
+	padding:0 2px;
+	left: 10px;
+}
+/* #btn {
+	text-align:center;
+} */
+.easyui-linkbutton {
+	padding:0 10px;
+}
+
+.icon-login{
+	background:url('../icons/login.png') no-repeat center center;
+}

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.digiwin.eretail.inner.dao.IUserDAO">
+
+	<insert id="addUser" parameterType="com.digiwin.eretail.inner.model.User">
+		INSERT INTO [user]
+        ( userId ,
+          userName ,
+          password ,
+          email ,
+          cellphone ,
+          phone ,
+          departId ,
+          status ,
+          comment,
+          qq
+        )
+		VALUES  ( #{userId} ,
+		          #{userName} ,
+		          #{password} ,
+		          #{email} ,
+		          #{cellphone} ,
+		          #{phone} ,
+		          #{departId} ,
+		          #{status} ,
+		          #{comment},
+		          #{qq}
+		        )
+	</insert>
+	
+	<update id="updateUser" parameterType="com.digiwin.eretail.inner.model.User">
+		UPDATE [user] SET userName=#{userName}, password=#{password}, email=#{email}, 
+		                  cellphone=#{cellphone}, phone=#{phone}, departId=#{departId},
+		                  status=#{status}, comment=#{comment}, qq=#{qq} WHERE userId=#{userId}
+		
+	</update>
+	
+	<delete id="delUserByID" parameterType="string">
+		DELETE [user] WHERE userId= #{userId}
+	</delete>
+	
+	<select id="getUserByID" parameterType="string" resultType="com.digiwin.eretail.inner.model.User">
+		SELECT * FROM [user] WHERE userId=#{userId}
+	</select>
+	
+	<select id="getAllUser" resultType="com.digiwin.eretail.inner.model.User">
+		SELECT * FROM [user]
+	</select>
+	
+	<select id="getUserByPage" parameterType="map" resultType="com.digiwin.eretail.inner.model.User">
+		SELECT w1.* FROM [user] w1 ,(
+			SELECT TOP ${pageNumber} ROW_NUMBER() OVER (ORDER BY userId DESC) n, userId FROM [user] ) w2 
+		where w1.userId = w2.userId and w2.n > ${pageSize} ORDER BY w2.n ASC
+	</select>
+
+	<select id="getUserCount" resultType="int">
+		SELECT count(*) as count from [user]
+	</select>
+	
+	<select id="getUserByIdAndPsw" parameterType="com.digiwin.eretail.inner.model.User" resultType="com.digiwin.eretail.inner.model.User">
+		SELECT * FROM [user] WHERE userId=#{userId} AND password=#{password} 
+	</select>
+    
+</mapper>

@@ -1,0 +1,5 @@
+﻿[
+    { "id": "01", "text": "用户管理", "iconCls": "icon-hamburg-docs" },
+    { "id": "02", "text": "单据管理", "iconCls": "icon-hamburg-docs" },
+    { "id": "03", "text": "常用网址", "iconCls": "icon-hamburg-docs" }
+]

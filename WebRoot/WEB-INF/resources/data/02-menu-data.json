@@ -1,0 +1,12 @@
+﻿[
+    { "id": "0201", "text": "项目信息", "pid": "02", "children": [
+        { "id": "020101", "text": "录入项目", "pid": "0201", "attributes": { "href": "docs/doc.html?base.html" } },
+        { "id": "020102", "text": "项目信息浏览", "pid": "0201", "attributes": { "href": "docs/doc.html?base.html" } }
+    	]
+    },
+    { "id": "0202", "text": "bug信息", "pid": "02", "children": [
+        { "id": "020201", "text": "录入bug", "pid": "0202", "attributes": { "href": "docs/doc.html?base.html" } },
+        { "id": "020202", "text": "bug信息浏览", "pid": "0202", "attributes": { "href": "docs/doc.html?base.html" } }
+    	]
+    }
+]

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.digiwin.eretail.inner.dao.ITicketTypeDAO">
+	<insert id="addTicketType" parameterType="com.digiwin.eretail.inner.model.TicketType">
+		INSERT INTO ticketType
+        ( ticketTypeId ,
+          ticketTypeName ,
+          comment
+        )
+		VALUES  ( #{ticketTypeId} ,
+		          #{ticketTypeName} ,
+		          #{comment}
+		        )
+	</insert>
+	
+	<update id="updateTicketType" parameterType="com.digiwin.eretail.inner.model.TicketType">
+		UPDATE ticketType SET ticketTypeName=#{ticketTypeName}, comment=#{comment} WHERE ticketTypeId=#{ticketTypeId}	
+	</update>
+	
+	<delete id="delTicketTypeByID" parameterType="string">
+		DELETE ticketType WHERE ticketTypeId= #{ticketTypeId}
+	</delete>
+	
+	<select id="getTicketTypeByID" parameterType="string" resultType="com.digiwin.eretail.inner.model.TicketType">
+		SELECT * FROM ticketType WHERE ticketTypeId=#{ticketTypeId}
+	</select>
+	
+	<select id="getAllTicketType" resultType="com.digiwin.eretail.inner.model.TicketType">
+		SELECT * FROM ticketType
+	</select>
+	
+	<select id="getTicketTypeByPage" parameterType="map" resultType="com.digiwin.eretail.inner.model.TicketType">
+		SELECT w1.* FROM ticketType w1 ,(
+			SELECT TOP ${pageNumber} ROW_NUMBER() OVER (ORDER BY ticketTypeId DESC) n, ticketTypeId FROM ticketType ) w2 
+		where w1.ticketTypeId = w2.ticketTypeId and w2.n > ${pageSize} ORDER BY w2.n ASC
+	</select>
+
+	<select id="getTicketTypeCount" resultType="int">
+		SELECT count(*) as count from ticketType
+	</select>
+    
+</mapper>

@@ -1,0 +1,8 @@
+﻿[
+    { "id": "0101", "text": "用户信息", "pid": "01", "attributes": { "href": "inner/common?path=inner/user" } },
+    { "id": "0102", "text": "权限设置", "pid": "01", "children": 
+        [
+        	{ "id": "010201", "text": "用户选项设置", "pid": "0102", "attributes": { "href": "examples/example.html?path=messager/demo.html" } }
+    	]
+    }
+]
