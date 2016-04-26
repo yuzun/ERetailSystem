@@ -57,9 +57,9 @@ public class UserQueryCondController {
 		for (UserQueryCond userQueryCond : userQueryConds) {
 			jsonObject = new JSONObject();
 			jsonObject.put("id", userQueryCond.getSerial());
-			jsonObject.put("text", userQueryCond.getQueryName());
+			jsonObject.put("text", userQueryCond.getQueryname());
 			jsonObject.put("iconCls", "icon-search");
-			jsonObject.put("attributes", userQueryCond.getQueryCond());
+			jsonObject.put("attributes", userQueryCond.getQuerycond());
 			jsonArray.add(jsonObject);
 		}
 		log.debug(jsonArray);

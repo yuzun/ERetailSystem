@@ -16,8 +16,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.digiwin.eretail.inner.dao.IUserQueryCondDAO;
+import com.digiwin.eretail.inner.mapper.UserQueryCondMapper;
 import com.digiwin.eretail.inner.model.UserQueryCond;
+import com.digiwin.eretail.inner.model.UserQueryCondExample;
 
 /**
  * ClassName:UserQueryCondServices <br/>
@@ -34,15 +35,19 @@ import com.digiwin.eretail.inner.model.UserQueryCond;
 public class UserQueryCondServices implements IUserQueryCondServices {
 
 	@Autowired
-	private IUserQueryCondDAO userQueryCondDAO;
+	private UserQueryCondMapper userquerycondMapper;
 	
 	@Override
 	public List<UserQueryCond> getAllUserQueryConds(String userId,
 			String ticketId) {
+		UserQueryCondExample example = new UserQueryCondExample();
+		example.createCriteria().andUseridEqualTo(userId)
+								.andTicketidEqualTo(ticketId);
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userId", userId);
 		map.put("ticketId", ticketId);
-		return userQueryCondDAO.getAllUserQueryCond(map);
+		return userquerycondMapper.selectByExample(example);
 	}
 
 }

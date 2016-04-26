@@ -109,7 +109,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div id="toolbar" class="panel-header panel-header-noborder top-toolbar">
                 <div id="infobar">
                     <span class="icon-hamburg-user" style="padding-left: 25px; background-position: left center;">
-                        欢迎：${sessionScope.user.userName}
+                        欢迎：${sessionScope.user.username}
                     </span>
                 </div>
                 <div id="searchbar">

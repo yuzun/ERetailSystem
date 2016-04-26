@@ -1,67 +1,290 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-<mapper namespace="com.digiwin.eretail.inner.dao.IUserDAO">
-
-	<insert id="addUser" parameterType="com.digiwin.eretail.inner.model.User">
-		INSERT INTO [user]
-        ( userId ,
-          userName ,
-          password ,
-          email ,
-          cellphone ,
-          phone ,
-          departId ,
-          status ,
-          comment,
-          qq
-        )
-		VALUES  ( #{userId} ,
-		          #{userName} ,
-		          #{password} ,
-		          #{email} ,
-		          #{cellphone} ,
-		          #{phone} ,
-		          #{departId} ,
-		          #{status} ,
-		          #{comment},
-		          #{qq}
-		        )
-	</insert>
-	
-	<update id="updateUser" parameterType="com.digiwin.eretail.inner.model.User">
-		UPDATE [user] SET userName=#{userName}, password=#{password}, email=#{email}, 
-		                  cellphone=#{cellphone}, phone=#{phone}, departId=#{departId},
-		                  status=#{status}, comment=#{comment}, qq=#{qq} WHERE userId=#{userId}
-		
-	</update>
-	
-	<delete id="delUserByID" parameterType="string">
-		DELETE [user] WHERE userId= #{userId}
-	</delete>
-	
-	<select id="getUserByID" parameterType="string" resultType="com.digiwin.eretail.inner.model.User">
-		SELECT * FROM [user] WHERE userId=#{userId}
-	</select>
-	
-	<select id="getAllUser" resultType="com.digiwin.eretail.inner.model.User">
-		SELECT * FROM [user]
-	</select>
-	
-	<select id="getUserByPage" parameterType="map" resultType="com.digiwin.eretail.inner.model.User">
-		SELECT w1.* FROM [user] w1 ,(
-			SELECT TOP ${pageNumber} ROW_NUMBER() OVER (ORDER BY userId DESC) n, userId FROM [user] ) w2 
-		where w1.userId = w2.userId and w2.n > ${pageSize} ORDER BY w2.n ASC
-	</select>
-
-	<select id="getUserCount" resultType="int">
-		SELECT count(*) as count from [user]
-	</select>
-	
-	<select id="getUserByIdAndPsw" parameterType="com.digiwin.eretail.inner.model.User" resultType="com.digiwin.eretail.inner.model.User">
-		SELECT * FROM [user] WHERE userId=#{userId} AND password=#{password} 
-	</select>
-    
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.digiwin.eretail.inner.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.digiwin.eretail.inner.model.User" >
+    <id column="userId" property="userid" jdbcType="VARCHAR" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="departId" property="departid" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="qq" property="qq" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    userId, userName, password, email, cellphone, phone, departId, status, comment, qq
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.digiwin.eretail.inner.model.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from [user]
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from [user]
+    where userId = #{userid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from [user]
+    where userId = #{userid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.digiwin.eretail.inner.model.UserExample" >
+    delete from [user]
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.digiwin.eretail.inner.model.User" >
+    insert into [user] (userId, userName, password, 
+      email, cellphone, phone, 
+      departId, status, comment, 
+      qq)
+    values (#{userid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{cellphone,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{departid,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{comment,jdbcType=VARCHAR}, 
+      #{qq,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.digiwin.eretail.inner.model.User" >
+    insert into [user]
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="username != null" >
+        userName,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="cellphone != null" >
+        cellphone,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="departid != null" >
+        departId,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="qq != null" >
+        qq,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null" >
+        #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="departid != null" >
+        #{departid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        #{qq,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.digiwin.eretail.inner.model.UserExample" resultType="java.lang.Integer" >
+    select count(*) from [user]
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update [user]
+    <set >
+      <if test="record.userid != null" >
+        userId = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null" >
+        userName = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cellphone != null" >
+        cellphone = #{record.cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.departid != null" >
+        departId = #{record.departid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.comment != null" >
+        comment = #{record.comment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qq != null" >
+        qq = #{record.qq,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update [user]
+    set userId = #{record.userid,jdbcType=VARCHAR},
+      userName = #{record.username,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      cellphone = #{record.cellphone,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      departId = #{record.departid,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=CHAR},
+      comment = #{record.comment,jdbcType=VARCHAR},
+      qq = #{record.qq,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.digiwin.eretail.inner.model.User" >
+    update [user]
+    <set >
+      <if test="username != null" >
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null" >
+        cellphone = #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="departid != null" >
+        departId = #{departid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        qq = #{qq,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.digiwin.eretail.inner.model.User" >
+    update [user]
+    set userName = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      cellphone = #{cellphone,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      departId = #{departid,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      qq = #{qq,jdbcType=VARCHAR}
+    where userId = #{userid,jdbcType=VARCHAR}
+  </update>
 </mapper>

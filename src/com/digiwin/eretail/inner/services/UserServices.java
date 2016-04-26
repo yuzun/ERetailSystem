@@ -15,8 +15,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.digiwin.eretail.inner.dao.IUserDAO;
+import com.digiwin.eretail.inner.mapper.UserMapper;
 import com.digiwin.eretail.inner.model.User;
+import com.digiwin.eretail.inner.model.UserExample;
 
 /**
  * ClassName:LoginServices <br/>
@@ -34,27 +35,26 @@ public class UserServices implements IUserServices{
 
 	private static Logger log = Logger.getLogger(UserServices.class);
 	@Autowired
-	private IUserDAO userDAO;
+	private UserMapper userMapper;
 	@Override
 	public User loginCheck(String userid, String password) {
 		
-		User user = new User();
-		user.setUserId(userid);
-		user.setPassword(password);
-		
-		User newUser = null;
+		UserExample userExample = new UserExample();
+		userExample.createCriteria().andUseridEqualTo(userid).
+									 andPasswordEqualTo(password);
+		List<User> newUser = null;
 		try {
-			newUser = userDAO.getUserByIdAndPsw(user);
+			newUser = userMapper.selectByExample(userExample);
 		} catch (Exception e) {	
 			log.error("登陆错误：" + e);
 		}
-		return newUser;
+		return newUser.get(0);
 		
 	}
 	@Override
 	public boolean AddUser(User user) {
 		try {
-			userDAO.addUser(user);
+			userMapper.insert(user);
 		} catch (Exception e) {
 			log.error("添加错误：" + e);
 			return false;
@@ -64,7 +64,7 @@ public class UserServices implements IUserServices{
 	@Override
 	public List<User> getUserList() {
 		try {
-			return userDAO.getAllUser();
+			return userMapper.selectByExample(null);
 		} catch (Exception e) {
 			log.error("获取用户信息错误：" + e);
 			return null;

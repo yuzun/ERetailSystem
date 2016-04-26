@@ -1,45 +1,181 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-<mapper namespace="com.digiwin.eretail.inner.dao.IDepartDAO">
-	<insert id="addDepart" parameterType="com.digiwin.eretail.inner.model.Depart">
-		INSERT INTO depart
-        ( departId ,
-          departName ,
-          comment
-        )
-		VALUES  ( #{departId} ,
-		          #{departName} ,
-		          #{comment}
-		        )
-	</insert>
-	
-	<update id="updateDepart" parameterType="com.digiwin.eretail.inner.model.Depart">
-		UPDATE depart SET departName=#{departName}, comment=#{comment} WHERE departId=#{departId}	
-	</update>
-	
-	<delete id="delDepartByID" parameterType="string">
-		DELETE depart WHERE departId= #{departId}
-	</delete>
-	
-	<select id="getDepartByID" parameterType="string" resultType="com.digiwin.eretail.inner.model.Depart">
-		SELECT * FROM depart WHERE departId=#{departId}
-	</select>
-	
-	<select id="getAllDepart" resultType="com.digiwin.eretail.inner.model.Depart">
-		SELECT * FROM depart
-	</select>
-	
-	<select id="getDepartByPage" parameterType="map" resultType="com.digiwin.eretail.inner.model.Depart">
-		SELECT w1.* FROM depart w1 ,(
-			SELECT TOP ${pageNumber} ROW_NUMBER() OVER (ORDER BY departId DESC) n, departId FROM depart ) w2 
-		where w1.departId = w2.departId and w2.n > ${pageSize} ORDER BY w2.n ASC
-	</select>
-
-	<select id="getDepartCount" resultType="int">
-		SELECT count(*) as count from depart
-	</select>
-    
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.digiwin.eretail.inner.mapper.DepartMapper" >
+  <resultMap id="BaseResultMap" type="com.digiwin.eretail.inner.model.Depart" >
+    <id column="departId" property="departid" jdbcType="VARCHAR" />
+    <result column="departName" property="departname" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    departId, departName, comment
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.digiwin.eretail.inner.model.DepartExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from depart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from depart
+    where departId = #{departid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from depart
+    where departId = #{departid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.digiwin.eretail.inner.model.DepartExample" >
+    delete from depart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.digiwin.eretail.inner.model.Depart" >
+    insert into depart (departId, departName, comment
+      )
+    values (#{departid,jdbcType=VARCHAR}, #{departname,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.digiwin.eretail.inner.model.Depart" >
+    insert into depart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="departid != null" >
+        departId,
+      </if>
+      <if test="departname != null" >
+        departName,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="departid != null" >
+        #{departid,jdbcType=VARCHAR},
+      </if>
+      <if test="departname != null" >
+        #{departname,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.digiwin.eretail.inner.model.DepartExample" resultType="java.lang.Integer" >
+    select count(*) from depart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update depart
+    <set >
+      <if test="record.departid != null" >
+        departId = #{record.departid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.departname != null" >
+        departName = #{record.departname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comment != null" >
+        comment = #{record.comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update depart
+    set departId = #{record.departid,jdbcType=VARCHAR},
+      departName = #{record.departname,jdbcType=VARCHAR},
+      comment = #{record.comment,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.digiwin.eretail.inner.model.Depart" >
+    update depart
+    <set >
+      <if test="departname != null" >
+        departName = #{departname,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where departId = #{departid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.digiwin.eretail.inner.model.Depart" >
+    update depart
+    set departName = #{departname,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR}
+    where departId = #{departid,jdbcType=VARCHAR}
+  </update>
 </mapper>

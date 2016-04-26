@@ -8,7 +8,7 @@
 
 <script type="text/javascript">
 		var turl = "userQueryCond/getAllQueryCond?userId="
-			+ "${sessionScope.user.userId}" + "&ticketId=user";
+			+ "${sessionScope.user.userid}" + "&ticketId=user";
 	</script>
 <script src="<%=path%>/resources/js/inner/common.js" type="text/javascript"></script>
 <script src="<%=path%>/resources/js/inner/user.js" type="text/javascript"></script>

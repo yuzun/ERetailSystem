@@ -1,31 +1,211 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-<mapper namespace="com.digiwin.eretail.inner.dao.IUserQueryCondDAO">
-
-	<insert id="addUserQueryCond" parameterType="com.digiwin.eretail.inner.model.UserQueryCond">
-		INSERT INTO [userQueryCond]
-        ( userId ,
-          ticketId ,
-          serial ,
-          queryName ,
-          queryCond
-        )
-		VALUES  ( #{userId} ,
-		          #{ticketId} ,
-		          #{serial} ,
-		          #{queryName} ,
-		          #{queryCond}
-		        )
-	</insert>
-	
-	<delete id="delUserQueryCond" parameterType="map">
-		DELETE [userQueryCond] WHERE userId= #{userId} and ticketId= #{ticketId} and serial= #{serial}
-	</delete>
-	
-	<select id="getAllUserQueryCond" parameterType="map" resultType="com.digiwin.eretail.inner.model.UserQueryCond">
-		SELECT * FROM [userQueryCond] WHERE userId= #{userId} and ticketId= #{ticketId}
-	</select>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.digiwin.eretail.inner.mapper.UserQueryCondMapper" >
+  <resultMap id="BaseResultMap" type="com.digiwin.eretail.inner.model.UserQueryCond" >
+    <id column="userId" property="userid" jdbcType="VARCHAR" />
+    <id column="ticketId" property="ticketid" jdbcType="VARCHAR" />
+    <id column="serial" property="serial" jdbcType="INTEGER" />
+    <result column="queryName" property="queryname" jdbcType="VARCHAR" />
+    <result column="queryCond" property="querycond" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    userId, ticketId, serial, queryName, queryCond
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.digiwin.eretail.inner.model.UserQueryCondExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from userQueryCond
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.digiwin.eretail.inner.model.UserQueryCondKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from userQueryCond
+    where userId = #{userid,jdbcType=VARCHAR}
+      and ticketId = #{ticketid,jdbcType=VARCHAR}
+      and serial = #{serial,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.digiwin.eretail.inner.model.UserQueryCondKey" >
+    delete from userQueryCond
+    where userId = #{userid,jdbcType=VARCHAR}
+      and ticketId = #{ticketid,jdbcType=VARCHAR}
+      and serial = #{serial,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.digiwin.eretail.inner.model.UserQueryCondExample" >
+    delete from userQueryCond
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.digiwin.eretail.inner.model.UserQueryCond" >
+    insert into userQueryCond (userId, ticketId, serial, 
+      queryName, queryCond)
+    values (#{userid,jdbcType=VARCHAR}, #{ticketid,jdbcType=VARCHAR}, #{serial,jdbcType=INTEGER}, 
+      #{queryname,jdbcType=VARCHAR}, #{querycond,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.digiwin.eretail.inner.model.UserQueryCond" >
+    insert into userQueryCond
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="ticketid != null" >
+        ticketId,
+      </if>
+      <if test="serial != null" >
+        serial,
+      </if>
+      <if test="queryname != null" >
+        queryName,
+      </if>
+      <if test="querycond != null" >
+        queryCond,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketid != null" >
+        #{ticketid,jdbcType=VARCHAR},
+      </if>
+      <if test="serial != null" >
+        #{serial,jdbcType=INTEGER},
+      </if>
+      <if test="queryname != null" >
+        #{queryname,jdbcType=VARCHAR},
+      </if>
+      <if test="querycond != null" >
+        #{querycond,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.digiwin.eretail.inner.model.UserQueryCondExample" resultType="java.lang.Integer" >
+    select count(*) from userQueryCond
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update userQueryCond
+    <set >
+      <if test="record.userid != null" >
+        userId = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ticketid != null" >
+        ticketId = #{record.ticketid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serial != null" >
+        serial = #{record.serial,jdbcType=INTEGER},
+      </if>
+      <if test="record.queryname != null" >
+        queryName = #{record.queryname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.querycond != null" >
+        queryCond = #{record.querycond,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update userQueryCond
+    set userId = #{record.userid,jdbcType=VARCHAR},
+      ticketId = #{record.ticketid,jdbcType=VARCHAR},
+      serial = #{record.serial,jdbcType=INTEGER},
+      queryName = #{record.queryname,jdbcType=VARCHAR},
+      queryCond = #{record.querycond,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.digiwin.eretail.inner.model.UserQueryCond" >
+    update userQueryCond
+    <set >
+      <if test="queryname != null" >
+        queryName = #{queryname,jdbcType=VARCHAR},
+      </if>
+      <if test="querycond != null" >
+        queryCond = #{querycond,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=VARCHAR}
+      and ticketId = #{ticketid,jdbcType=VARCHAR}
+      and serial = #{serial,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.digiwin.eretail.inner.model.UserQueryCond" >
+    update userQueryCond
+    set queryName = #{queryname,jdbcType=VARCHAR},
+      queryCond = #{querycond,jdbcType=VARCHAR}
+    where userId = #{userid,jdbcType=VARCHAR}
+      and ticketId = #{ticketid,jdbcType=VARCHAR}
+      and serial = #{serial,jdbcType=INTEGER}
+  </update>
 </mapper>

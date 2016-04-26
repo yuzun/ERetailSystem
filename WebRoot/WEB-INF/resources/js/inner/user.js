@@ -22,9 +22,9 @@ $(function() {
 						title : '用户信息',
 						//width : 1120,
 						//height : 600,
-						method : "get",
-						url : "inner/userList",
-						idField : 'userId',
+						//method : "get",
+						//url : "inner/userList",
+						idField : 'userid',
 						remoteSort : false,
 						rownumbers : true,
 						//pagination : true,
@@ -36,14 +36,14 @@ $(function() {
 							field : 'ck',
 							checkbox : true
 						}, {
-							field : 'userId',
+							field : 'userid',
 							title : '编号',
 							width : 80,
 							sortable : true
 						} ] ],
 						columns : [ [
 								{
-									field : 'userName',
+									field : 'username',
 									title : '姓名',
 									width : 140,
 									filter : "livebox"
