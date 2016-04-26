@@ -10,3 +10,7 @@ function addUserQueryCond(userId, ticketId, table){
 function delUserQueryCond(userId, ticketId, serial){
 	alert('add');
 }
+
+function getDataByCond(node){
+	
+}

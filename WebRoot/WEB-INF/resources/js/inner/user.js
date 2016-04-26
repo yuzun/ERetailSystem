@@ -12,7 +12,8 @@ $(function() {
 		method : "get",
 		url : turl,
 		onClick: function(node) {
-			console.log(node);
+			var data = getDataByCond(node, url);
+			$("#t1").datagrid("loadData")
 		}
 	});
 
