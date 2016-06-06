@@ -224,9 +224,9 @@
                 }
             });
 
-        $(btnContact).click(function () {
-            window.open("http://www.cnblogs.com/cjw0511/p/3324082.html", "_blank");
-        });
+//        $(btnContact).click(function () {
+//            window.open("http://www.cnblogs.com/cjw0511/p/3324082.html", "_blank");
+//        });
 
         $(btnFullScreen).click(function () {
             if ($.util.supportsFullScreen) {
@@ -437,15 +437,15 @@
     window.mainpage.mainTabs.loadHash = function (hash) {
         while (hash.left(1) == "#") { hash = hash.substr(1); }
         if (String.isNullOrWhiteSpace(hash)) { return; }
-        $.get("common/nav-api-menu-data.json", function (menus) {
-            var array = $.fn.tree.extensions.cascadeToArray(menus),
-                node = $.array.first(array, function (val) { return val.attributes && val.attributes.href == hash; });
-            if (node) {
-                window.mainpage.addModuleTab(node);
-            } else {
-                $.easyui.messager.show("hash is not exists");
-            }
-        }, "json");
+//        $.get("common/nav-api-menu-data.json", function (menus) {
+//            var array = $.fn.tree.extensions.cascadeToArray(menus),
+//                node = $.array.first(array, function (val) { return val.attributes && val.attributes.href == hash; });
+//            if (node) {
+//                window.mainpage.addModuleTab(node);
+//            } else {
+//                $.easyui.messager.show("hash is not exists");
+//            }
+//        }, "json");
     };
 
 

@@ -12,6 +12,7 @@ package com.digiwin.eretail.inner.services;
 import java.util.List;
 
 import com.digiwin.eretail.inner.model.UserQueryCond;
+import com.digiwin.eretail.inner.model.UserQueryCondKey;
 
 /**
  * ClassName:IUserQueryCondServices <br/>
@@ -26,5 +27,7 @@ import com.digiwin.eretail.inner.model.UserQueryCond;
 public interface IUserQueryCondServices {
 
 	public List<UserQueryCond> getAllUserQueryConds(String userId, String ticketId);
+	public boolean addUserQueryCond(UserQueryCond userQueryCond);
+	public boolean delUserQueryCondByKey(UserQueryCondKey userQueryCondKey);
 }
 

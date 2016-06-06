@@ -13,12 +13,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import sun.util.logging.resources.logging;
 
 import com.digiwin.eretail.inner.mapper.UserQueryCondMapper;
 import com.digiwin.eretail.inner.model.UserQueryCond;
 import com.digiwin.eretail.inner.model.UserQueryCondExample;
+import com.digiwin.eretail.inner.model.UserQueryCondKey;
 
 /**
  * ClassName:UserQueryCondServices <br/>
@@ -34,6 +38,7 @@ import com.digiwin.eretail.inner.model.UserQueryCondExample;
 @Service
 public class UserQueryCondServices implements IUserQueryCondServices {
 
+	private static Logger log = Logger.getLogger(UserServices.class);
 	@Autowired
 	private UserQueryCondMapper userquerycondMapper;
 	
@@ -50,5 +55,27 @@ public class UserQueryCondServices implements IUserQueryCondServices {
 		return userquerycondMapper.selectByExample(example);
 	}
 
+	@Override
+	public boolean addUserQueryCond(UserQueryCond userQueryCond) {
+		try {
+			userquerycondMapper.insert(userQueryCond);
+		} catch (Exception e) {
+			log.error("添加错误：" + e);
+			return false;
+		}
+		return true;
+		
+	}
+
+	@Override
+	public boolean delUserQueryCondByKey(UserQueryCondKey userQueryCondKey) {
+		try {
+			userquerycondMapper.deleteByPrimaryKey(userQueryCondKey);
+		} catch (Exception e) {
+			log.error("删除错误：" + e);
+			return false;
+		}
+		return true;
+	}
 }
 

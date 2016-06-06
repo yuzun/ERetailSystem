@@ -18,13 +18,17 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.digiwin.eretail.inner.model.TableInfo;
 import com.digiwin.eretail.inner.model.User;
+import com.digiwin.eretail.inner.services.ICommonSQLServices;
 import com.digiwin.eretail.inner.services.IUserServices;
 
 /**
@@ -44,7 +48,8 @@ public class UserController {
 	private IUserServices userServices;
 	@Autowired
 	private HttpServletRequest request;
-
+	@Autowired
+	private ICommonSQLServices commonSQLServices;
 	
 	@RequestMapping("/index")
 	public String index(){
@@ -83,7 +88,7 @@ public class UserController {
 	@RequestMapping("/regdo")
 	@ResponseBody
 	public String regdo(User user){
-		if (userServices.AddUser(user)) {
+		if (userServices.addUser(user)) {
 			request.getSession().setAttribute("user", user);
 			return "inner/index";
 		}
@@ -118,5 +123,32 @@ public class UserController {
 		return JSONObject.parseObject(result);
 	}
 
+	@RequestMapping("/userListByCond")
+	@ResponseBody
+	public Object getUserListByCond(String cond){
+		log.debug(cond);
+		List<User> users = userServices.getUserListByCond(cond);
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(users == null){
+			map.put("total", 0);
+			map.put("rows", null);
+		} else{
+			map.put("total", users.size());
+			map.put("rows", users);
+		}
+		String result = JSON.toJSONString(map);
+		log.debug(result);
+		return JSONObject.parseObject(result);
+	}
+	
+	@RequestMapping("/getUserQueryCondPage")
+	public String getUserQueryCondPage(Model model, String table){
+		List<TableInfo> list = commonSQLServices.getAllFields(table);
+		String result = JSON.toJSONString(list);
+		JSONArray array = JSON.parseArray(result);
+		log.debug(result);
+		model.addAttribute("fieldList", array);
+		return "inner/userQueryForm";
+	}
 }
 

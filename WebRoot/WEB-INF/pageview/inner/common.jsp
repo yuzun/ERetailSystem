@@ -121,7 +121,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 },
                 addModuleTab = $.util.parent && $.util.parent.mainpage && $.isFunction($.util.parent.mainpage.addModuleTab) ? $.util.parent.mainpage.addModuleTab : openNewPage,
                 t = $("#tt");
-
+			//containerTabs.tabs('disableTab',1);
             $("#demo").each(function () {
                 var p = $(this), opts = p.panel("options"), onLoad = opts.onLoad;
                 opts.onLoad = function () {
@@ -183,7 +183,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             
         </div>
         <div id="code" data-options="title: '数据编辑',refreshable: false, iconCls: 'icon-standard-script-code'">
-            
+            dfgfdgfdgdfg
         </div>
     </div>
 <!--     <div style="display: none;">

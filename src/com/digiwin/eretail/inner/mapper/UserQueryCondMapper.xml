@@ -104,6 +104,9 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.digiwin.eretail.inner.model.UserQueryCond" >
+  	<selectKey keyProperty="serial" order="BEFORE" resultType="java.lang.Integer">
+  		select ISNULL(MAX(serial), 1) from userQueryCond where userId=#{userid} and ticketId=#{ticketid}
+  	</selectKey>
     insert into userQueryCond (userId, ticketId, serial, 
       queryName, queryCond)
     values (#{userid,jdbcType=VARCHAR}, #{ticketid,jdbcType=VARCHAR}, #{serial,jdbcType=INTEGER}, 

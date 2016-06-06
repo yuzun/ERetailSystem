@@ -22,6 +22,7 @@ import sun.util.logging.resources.logging;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.digiwin.eretail.inner.model.UserQueryCond;
+import com.digiwin.eretail.inner.model.UserQueryCondKey;
 import com.digiwin.eretail.inner.services.IUserQueryCondServices;
 
 /**
@@ -64,6 +65,35 @@ public class UserQueryCondController {
 		}
 		log.debug(jsonArray);
 		return jsonArray;
+	}
+	
+	@RequestMapping("/addQueryCond")
+	@ResponseBody
+	public String addQueryCond(String userId, String ticketId, String queryName, String cond){
+		UserQueryCond userQueryCond = new UserQueryCond();
+		userQueryCond.setUserid(userId);
+		userQueryCond.setTicketid(ticketId);
+		userQueryCond.setQueryname(queryName);
+		userQueryCond.setQuerycond(cond);
+		if(! userQueryCondServices.addUserQueryCond(userQueryCond)){
+			return "增加自定义查询条件失败！";
+		}
+		
+		return "增加自定义查询条件成功！";
+	}
+	
+	@RequestMapping("/delQueryCond")
+	@ResponseBody
+	public String delQueryCond(String userId, String ticketId, int serial){
+		UserQueryCondKey userQueryCondKey = new UserQueryCondKey();
+		userQueryCondKey.setUserid(userId);
+		userQueryCondKey.setTicketid(ticketId);
+		userQueryCondKey.setSerial(serial);
+		if(! userQueryCondServices.delUserQueryCondByKey(userQueryCondKey)){
+			return "删除自定义查询条件失败！";
+		}
+		
+		return "增加自定义查询条件成功！";
 	}
 
 }

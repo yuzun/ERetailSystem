@@ -8,7 +8,9 @@
 
 <script type="text/javascript">
 		var turl = "userQueryCond/getAllQueryCond?userId="
-			+ "${sessionScope.user.userid}" + "&ticketId=user";
+			+ "${sessionScope.user.userid}" + "&ticketId=user";	
+		var userId = "${sessionScope.user.userid}";
+		var serial = 0;
 	</script>
 <script src="<%=path%>/resources/js/inner/common.js" type="text/javascript"></script>
 <script src="<%=path%>/resources/js/inner/user.js" type="text/javascript"></script>
@@ -18,12 +20,12 @@
 			data-options="region:'west',title:'条件',split:true,tools: [{
         iconCls:'icon-add',
         handler:function(){
-				addUserQueryCond();
+				addQueryCond();
 			}
    		 },{
         iconCls:'icon-remove',
         handler:function(){
-
+				delQueryCond();
 			}
    		 }] "
 			style="width:150px;">

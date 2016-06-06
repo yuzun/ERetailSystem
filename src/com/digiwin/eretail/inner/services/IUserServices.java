@@ -27,8 +27,10 @@ public interface IUserServices {
 
 	public User loginCheck(String userid, String password);
 	
-	public boolean AddUser(User user);
+	public boolean addUser(User user);
 	
 	public List<User> getUserList();
+	
+	public List<User> getUserListByCond(String cond);
 }
 

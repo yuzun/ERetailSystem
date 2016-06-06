@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.digiwin.eretail.inner.mapper.CommonMapper" >
+  <select id="getAllFields" parameterType="java.lang.String" resultType="com.digiwin.eretail.inner.model.TableInfo">
+  	SELECT   
+        col.name AS value ,  
+        CAST(ISNULL(ep.[value], '') AS VARCHAR(50)) AS text 
+		FROM    dbo.syscolumns col  
+        LEFT  JOIN dbo.systypes t ON col.xtype = t.xusertype  
+        inner JOIN dbo.sysobjects obj ON col.id = obj.id  
+                                         AND obj.xtype = 'U'  
+                                         AND obj.status >= 0  
+        LEFT  JOIN sys.extended_properties ep ON col.id = ep.major_id  
+                                                      AND col.colid = ep.minor_id  
+                                                      AND ep.name = 'MS_Description'   
+		WHERE   obj.name = #{table}
+		ORDER BY col.colorder 
+  </select>
+</mapper>

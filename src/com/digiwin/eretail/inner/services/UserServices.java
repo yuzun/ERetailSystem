@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.digiwin.eretail.inner.mapper.UserMapper;
 import com.digiwin.eretail.inner.model.User;
 import com.digiwin.eretail.inner.model.UserExample;
+import com.digiwin.eretail.inner.model.UserExample.Criteria;
 
 /**
  * ClassName:LoginServices <br/>
@@ -52,7 +53,7 @@ public class UserServices implements IUserServices{
 		
 	}
 	@Override
-	public boolean AddUser(User user) {
+	public boolean addUser(User user) {
 		try {
 			userMapper.insert(user);
 		} catch (Exception e) {
@@ -65,6 +66,19 @@ public class UserServices implements IUserServices{
 	public List<User> getUserList() {
 		try {
 			return userMapper.selectByExample(null);
+		} catch (Exception e) {
+			log.error("获取用户信息错误：" + e);
+			return null;
+		}
+	}
+	@Override
+	//cond:格式：类型;字段，操作符，搜索值;字段，操作符，搜索值
+	//     格式：0代表设计，1代表自定义，及自己写sql条件
+	//     操作符：> < = <> 相似于 之间
+	//cond eg: 1；userId，=，yuzheng;
+	public List<User> getUserListByCond(String cond) {
+		try {
+			return userMapper.selectUsersByCond(cond);
 		} catch (Exception e) {
 			log.error("获取用户信息错误：" + e);
 			return null;
